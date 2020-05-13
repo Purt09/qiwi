@@ -2,6 +2,7 @@
   "name": "purt09/qiwi",
   "description": "A very simple PHP QIWI API",
   "type": "library",
+  "license": "MIT",
   "authors": [
     {
       "name": "Purt09",
