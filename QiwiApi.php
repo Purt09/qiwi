@@ -56,12 +56,13 @@ class QiwiApi
         return $this->sendRequest('sinap/terms/'. $providerId .'/payments', $params, 1);
     }
 
-    /** Проверяет оплату по комменту и сумме
+    /** Проверяет оплату по комментарию и сумме
+     * Комментарий не должен когда-либо повторятся, иначе пожет привести к сбоям.
      * @param string $comment
      * @param int $sum
-     * @return bool
+     * @return bool Оплачен/Неоплачен
      */
-    public function searchPayment(string $comment, int $sum): bool
+    public function searchPayment($comment, $sum)
     {
         $result = false;
         foreach ($this->getAllData() as $item)

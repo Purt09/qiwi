@@ -1,0 +1,19 @@
+{
+  "name": "purt09/qiwi",
+  "description": "A very simple PHP QIWI API",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Purt09",
+      "email": "alexpurtv@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "purt09\\qiwi\\": ""
+    }
+  }
+}
