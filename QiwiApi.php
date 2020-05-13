@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Purt09\qiwi;
+namespace purt09\qiwi;
 
 
 class QiwiApi
