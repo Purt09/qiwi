@@ -16,7 +16,7 @@ $qiwi_phone = '';
 $qiwi = new QiwiApi($qiwi_phone, $qiwi_token;
 $result = $qiwi->searchPayment($order_id, $sum);
 if($result)
-    echo 'Оплата прошла успещно';
+    echo 'Оплата прошла успешно';
  ```
 
  

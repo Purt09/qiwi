@@ -66,7 +66,7 @@ class QiwiApi
     {
         $result = false;
         foreach ($this->getAllData() as $item)
-            if ($item['sum'] === $sum && $item['comment'] === $comment)
+            if ($item['sum'] == $sum && $item['comment'] == $comment)
                 $result = true;
         return $result;
     }
