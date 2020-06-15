@@ -81,6 +81,8 @@ class QiwiApi
             throw new \RuntimeException('Данные от киви кошелька или его токен некорректны. Покупка невозможна');
         $result = [];
         foreach ($data['data'] as $item) {
+            if($item['sum']['currency'] != 643)
+                continue;
             array_push($result, [
                 'sum' => $item['sum']['amount'],
                 'account' => $item['account'],

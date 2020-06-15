@@ -1,5 +1,5 @@
 # QIWI работа с API #
-Данная библиотека поможет вам быстро начать работу с API QIWI
+Данная библиотека поможет вам быстро начать работу с API QIWI 
 https://developer.qiwi.com/ru/qiwi-wallet-personal/
 ## Установка ##
 ```
@@ -18,5 +18,6 @@ $result = $qiwi->searchPayment($order_id, $sum);
 if($result)
     echo 'Оплата прошла успешно';
  ```
-
+Примечание:
+Работает только с рублями
  
