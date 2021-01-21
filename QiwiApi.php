@@ -104,9 +104,10 @@ class QiwiApi
         $link = 99;
         if(isset($nickname)) {
             array_push($data, [
-                'extra[\'accountType\']' => $nickname,
+                'extra[\'accountType\']' => 'nickname',
             ]);
             $link = 99999;
+            $data['extra']['account'] = $nickname;
         }
 
         return 'https://qiwi.com/payment/form/' . $link . '?' . http_build_query($data) . "\n";
