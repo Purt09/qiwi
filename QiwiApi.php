@@ -56,22 +56,67 @@ class QiwiApi
         return $this->sendRequest('sinap/terms/'. $providerId .'/payments', $params, 1);
     }
 
-    /** Проверяет оплату по комментарию и сумме
+    /**
+     * Проверяет оплату по комментарию и сумме
      * Комментарий не должен когда-либо повторятся, иначе пожет привести к сбоям.
-     * @param string $comment
-     * @param int $sum
-     * @return bool Оплачен/Неоплачен
+     *
+     * @param string $comment Уникальный индентификатор
+     * @param float $sum Сумма
+     * @param int $currency Валюта платежа
+     * @return bool
      */
-    public function searchPayment($comment, $sum)
+    public function searchPayment($comment, $sum, $currency = 643)
     {
         $result = false;
-        foreach ($this->getAllData() as $item)
+        foreach ($this->getAllData($currency) as $item)
             if ($item['sum'] == $sum && $item['comment'] == $comment)
                 $result = true;
         return $result;
     }
 
-    private function getAllData()
+    /**
+     * Генерирует ссылку для перевода
+     *
+     * ВАЖНО при переводе по нику комментари не автозаполняется !!! Баг в киви
+     *
+     *
+     * @param int $priceAmount  сумма в рублях
+     * @param int $priceFraction  сумма в копейках
+     * @param string $id  Комментарий - уникальный индентификатор
+     * @param int $currency валюта
+     * @param string $nickname Надо ли перевод по нику
+     * @return string
+     */
+    public function getLink($priceAmount, $priceFraction, $id, $currency = 643, $nickname = null)
+    {
+        $data = [
+            'amountInteger' => $priceAmount,
+            'amountFraction' => $priceFraction,
+            'currency' => $currency,
+            'extra[\'comment\']' => $id,
+            'extra[\'account\']' => $this->_phone,
+            'blocked' => [
+                '0' => 'comment',
+                '1' => 'account',
+                '2' => 'sum',
+            ],
+        ];
+        $link = 99;
+        if(isset($nickname)) {
+            array_push($data, [
+                'extra[\'accountType\']' => $nickname,
+            ]);
+            $link = 99999;
+        }
+
+        return 'https://qiwi.com/payment/form/' . $link . '?' . http_build_query($data) . "\n";
+    }
+
+    /**
+     * @param int $currency
+     * @return array
+     */
+    private function getAllData($currency)
     {
         $data = $this->getPaymentsHistory([
             'rows' => 50,
@@ -81,7 +126,7 @@ class QiwiApi
             throw new \RuntimeException('Данные от киви кошелька или его токен некорректны. Покупка невозможна');
         $result = [];
         foreach ($data['data'] as $item) {
-            if($item['sum']['currency'] != 643)
+            if($item['sum']['currency'] != $currency)
                 continue;
             array_push($result, [
                 'sum' => $item['sum']['amount'],
